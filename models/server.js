@@ -1,6 +1,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 class Server {
 
@@ -9,6 +10,12 @@ class Server {
         this.PORT = process.env.PORT;
         this.usuariosPath = '/api/usuarios';
 
+
+        //conectar a base de datoss
+        this.conectarDB();
+
+
+
         //Middelware
         this.middelwares();
 
@@ -16,15 +23,11 @@ class Server {
         this.routes();
     }
 
-    routes() {
-        this.app.use(this.usuariosPath, require('../routes/usuarios'));
+   
+    async conectarDB() { 
+        await dbConnection();
     }
-
-    listen() {
-        this.app.listen(this.PORT, () => {
-            console.log("Servidor corriendo en puerto", this.PORT);
-        });
-    }
+  
 
     middelwares() {
         //CORS 
@@ -39,7 +42,15 @@ class Server {
 
     }
 
+    routes() {
+        this.app.use(this.usuariosPath, require('../routes/usuarios'));
+    }
 
+    listen() {
+        this.app.listen(this.PORT, () => {
+            console.log("Servidor corriendo en puerto", this.PORT);
+        });
+    }
 
 }
 
