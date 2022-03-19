@@ -4,21 +4,38 @@ const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
 
 
-const usuariosGet = (req = request, res = response) => {
+const usuariosGet = async (req = request, res = response) => {
 
-    const { q, id, nombre, apikey } = req.query;
+    // const {q, nombre = 'No name', apikey , page = 1, limit} = req.body
+    const { limite = 5, desde = 0 } = req.query;
 
-    res.json({
-        "msj": 'get API Controller',
-        apikey,
-        q
-    });
+    const query = { estado: true };
+    // const usuarios = await Usuario.find({ estado: true })
+    //     .skip(Number(desde))
+    //     .limit(Number(limite));
+
+    // const Total = await Usuario.countDocuments({ estado: true });
+
+    const [Total, Resultado] = await Promise.all([
+        Usuario.countDocuments(query),
+        Usuario.find(query)
+            .skip(Number(desde))
+            .limit(Number(limite))
+
+    ]);
+
+    // res.json({ Total, usuarios });
+    res.json({ Total, Resultado });
+
+
+
+
 }
 
 const usuariosPut = async (req, res = response) => {
 
     const id = req.params.id;
-    const {_id, password, google, correo, ...resto } = req.body;
+    const { _id, password, google, correo, ...resto } = req.body;
 
     //TODO VALIDAR vs BD
     if (password) {
@@ -52,9 +69,17 @@ const usuariosPost = async (req, res = response) => {
     });
 }
 
-const usuariosDelete = (req, res) => {
+const usuariosDelete = async (req, res = response) => {
+
+    const id = req.params.id;
+
+    // const usuario = await Usuario.findByIdAndDelete(id);
+
+    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+
     res.json({
-        "msj": 'delete API controller'
+        "msj": 'Usuario Borrado',
+        usuario
     });
 }
 
