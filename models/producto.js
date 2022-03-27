@@ -32,7 +32,8 @@ const ProductoSchema = Schema(
 
 ProductoSchema.methods.toJSON = function () {
     const { __v, _id, ...producto } = this.toObject();
-    producto.uid = _id;
+    producto.id = _id;
+    return producto;
 }
 
 module.exports = model('Producto', ProductoSchema);

@@ -1,18 +1,21 @@
+
 const { response, request } = require('express');
+
 const Producto = require('../models/producto');
 
 const productosGet = async (req = request, res = response) => {
 
-    const { numero = 5, desde = 0 } = req.query;
+    const { limite = 5, desde = 0 } = req.query;
 
     const query = { IsActive: true };
 
     const Operacion = true;
-    const [Resultado] = await Promise.all([
-        Producto.countDocuments(query),
+
+    const Resultado = await Promise.all([
+        //Producto.countDocuments(query),
         Producto.find(query)
-            .skip(Number(desde))
-            .limit(Number(limite))
+        //    .skip(Number(desde))
+        //    .limit(Number(limite))
 
     ]);
 
@@ -21,5 +24,22 @@ const productosGet = async (req = request, res = response) => {
 
 }
 
+const productosPost = async (req = request, res = response) => {
 
-module.exports = { productosGet };
+    const { guid, Name, Description, Price, IsActive, Image } = req.body;
+
+    const producto = new Producto({ guid, Name, Description, Price, IsActive, Image });
+
+    await producto.save();
+
+    res.json({
+        msg: 'post API controller -- Producto',
+        producto
+    });
+
+}
+
+
+
+
+module.exports = { productosGet, productosPost };
