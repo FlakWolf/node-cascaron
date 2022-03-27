@@ -11,8 +11,8 @@ const productosGet = async (req = request, res = response) => {
 
     const Operacion = true;
 
-    const [Total, Resultado] = await Promise.all([
-        Producto.countDocuments(query),
+    const Resultado = await Promise.all([
+        //Producto.countDocuments(query),
         Producto.find(query)
         //    .skip(Number(desde))
         //    .limit(Number(limite))
@@ -20,7 +20,7 @@ const productosGet = async (req = request, res = response) => {
     ]);
 
 
-    res.json({ IsSuccess: Operacion, Total, Message: "Procesado", Result: Resultado });
+    res.json({ IsSuccess: Operacion, Message: "Procesado", Result: Resultado });
 
 }
 
