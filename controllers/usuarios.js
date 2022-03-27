@@ -15,7 +15,7 @@ const usuariosGet = async (req = request, res = response) => {
     //     .limit(Number(limite));
 
     // const Total = await Usuario.countDocuments({ estado: true });
-
+    const Operacion = true;
     const [Total, Resultado] = await Promise.all([
         Usuario.countDocuments(query),
         Usuario.find(query)
@@ -25,9 +25,10 @@ const usuariosGet = async (req = request, res = response) => {
     ]);
 
     // res.json({ Total, usuarios });
-    res.json({ Total, Resultado });
 
+    //res.json({  Total, Resultado });
 
+    res.json({ IsSuccess: Operacion, Message: "Total", Result: Resultado });
 
 
 }
@@ -69,17 +70,17 @@ const usuariosPost = async (req, res = response) => {
     });
 }
 
-const usuariosDelete = async (req, res = response) => {
+const usuariosDelete = async (req = request, res = response) => {
 
     const id = req.params.id;
 
-    // const usuario = await Usuario.findByIdAndDelete(id);
-
     const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+    const usuarioAutenticado = req.usuario;
 
     res.json({
         "msj": 'Usuario Borrado',
-        usuario
+        usuario,
+        usuarioAutenticado
     });
 }
 

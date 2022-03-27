@@ -10,6 +10,8 @@ class Server {
         this.PORT = process.env.PORT;
         this.usuariosPath = '/api/usuarios';
 
+        this.authPath = '/api/auth'
+
 
         //conectar a base de datoss
         this.conectarDB();
@@ -23,11 +25,11 @@ class Server {
         this.routes();
     }
 
-   
-    async conectarDB() { 
+
+    async conectarDB() {
         await dbConnection();
     }
-  
+
 
     middelwares() {
         //CORS 
@@ -44,6 +46,7 @@ class Server {
 
     routes() {
         this.app.use(this.usuariosPath, require('../routes/usuarios'));
+        this.app.use(this.authPath, require('../routes/auth'));
     }
 
     listen() {
