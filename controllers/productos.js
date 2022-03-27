@@ -19,7 +19,9 @@ const productosGet = async (req = request, res = response) => {
     ]);
 
 
-    res.json({ IsSuccess: Operacion, Message: "Procesado", Result: Resultado });
+    //res.json({ IsSuccess: Operacion, Message: "Procesado", Result: Resultado });
+
+    res.json({ Result: Resultado });
 
 }
 
