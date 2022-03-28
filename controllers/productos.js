@@ -21,7 +21,7 @@ const productosGet = async (req = request, res = response) => {
 
     //res.json({ IsSuccess: Operacion, Message: "Procesado", Result: Resultado });
 
-    res.json({ Total });
+    res.json({ "Product": Resultado }).Producto;
 
 }
 
