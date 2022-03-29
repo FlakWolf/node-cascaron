@@ -1,5 +1,4 @@
 const { response, request } = require('express');
-
 const Producto = require('../models/producto');
 
 const productosGet = async (req = request, res = response) => {
@@ -21,7 +20,7 @@ const productosGet = async (req = request, res = response) => {
 
     //res.json({ IsSuccess: Operacion, Message: "Procesado", Result: Resultado });
 
-    res.json({ "Product": Resultado }).Producto;
+    res.json( Resultado);
 
 }
 
@@ -32,7 +31,6 @@ const productosPost = async (req = request, res = response) => {
     const producto = new Producto({ guid, Name, Description, Price, IsActive, Image });
 
     await producto.save();
-
     res.json({
         msg: 'post API controller -- Producto',
         producto
