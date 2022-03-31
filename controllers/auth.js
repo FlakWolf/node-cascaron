@@ -1,6 +1,8 @@
+
 const bcryptjs = require("bcryptjs");
 const { request, response } = require("express");
 const { generarJWT } = require("../helpers/generarjwt");
+const { googleVerify } = require("../helpers/google-verify");
 const Usuario = require('../models/usuario');
 
 
@@ -26,7 +28,7 @@ const login = async (req = request, res = response) => {
         const validarPassword = bcryptjs.compareSync(password, usuario.password);
         if (!validarPassword) {
             return res.status(400).json(
-                { msg: 'Usuario / Password no son correctos - Password'}
+                { msg: 'Usuario / Password no son correctos - Password' }
             );
         }
 
@@ -46,6 +48,29 @@ const login = async (req = request, res = response) => {
 }
 
 
+const googleSignin = async (req = request, res = response) => {
+
+    const { id_token } = req.body;
 
 
-module.exports = { login };
+
+    try {
+        const googleUser = await googleVerify(id_token);
+
+        res.json({
+            msg: "Todo bien",
+            id_token
+        });
+
+    } catch (error) {
+
+    }
+
+
+}
+
+
+module.exports = {
+    login,
+    googleSignin
+};
