@@ -37,8 +37,7 @@ const usuariosPut = async (req, res = response) => {
 
     const id = req.params.id;
     const { _id, password, google, correo, ...resto } = req.body;
-
-    //TODO VALIDAR vs BD
+    
     if (password) {
         //Encriptar contraseña
         const salt = bcryptjs.genSaltSync(10);
